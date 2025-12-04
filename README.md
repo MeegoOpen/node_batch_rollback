@@ -1,0 +1,13 @@
+飞书项目 批量驳回 插件开源版本
+
+原插件链接：[节点批量驳回](https://project.feishu.cn/openapp/plugin_share?appKey=MII_668CD3753A41C002)
+
+本开源版本基于官方版本进行开发，插件核心功能一致，部分UI组件使用有差异，同时去除了前后端登录鉴权机制，仅用于企业内部插件学习及功能二次开发。
+
+目录说明：
+
+node-batch-rollback-be 是使用golang gin框架实现的后端服务，详细使用见目录内readme
+
+node-batch-rollback-fe 是插件前端源码，详细使用参见目录内readme
+
+插件开发入门参考：https://project.feishu.cn/b/helpcenter/1p8d7djs/49k1ojm9
