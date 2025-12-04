@@ -1,4 +1,4 @@
-# Meego App Node Batch Operation
+# Feishu Project App Node Batch Rollback
 
 一个基于 Lark Project CLI 的前端插件项目，用于在工作项页面提供“批量驳回”等批处理能力，同时支持配置化管理和 PC / 移动端入口。
 
@@ -83,4 +83,6 @@ npm run dev2
 
 ## 点位说明
 配置点位，节点-更多点位，节点流转点位
+
+
 
