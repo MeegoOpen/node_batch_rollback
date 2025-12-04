@@ -1,0 +1,20 @@
+{
+  "siteDomain": "https://project.feishu.cn",
+  "pluginId": "",
+  "OpenAPIHost": "http://localhost:8081",
+  "pluginSecret": "",
+  "resources": [
+    {
+      "id": "button_batch_opt_mobile",
+      "entry": "./src/features/optWeb/index.tsx"
+    },
+    {
+      "id": "button_batch_opt_pc",
+      "entry": "./src/features/opt/index.tsx"
+    },
+    {
+      "id": "config_batch_opt_web",
+      "entry": "./src/features/config/index.tsx"
+    }
+  ]
+}

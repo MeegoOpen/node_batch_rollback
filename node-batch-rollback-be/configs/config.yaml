@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+database:
+  driver: "sqlite"
+  dbname: "node_operator.db"
+
+feishu:
+  api_host: "https://project.feishu.cn"
+  plugin_id: ""
+  plugin_secret: ""

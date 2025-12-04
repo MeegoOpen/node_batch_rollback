@@ -1,0 +1,115 @@
+.opt-form-wrap {
+  &.pc {
+    // margin-top: 10px;
+  }
+  &.mobile {
+    padding: 10px 15px;
+    margin: 0 10px;
+    .semi-form-field-label-text {
+      color: var(--semi-color-text-2);
+      font-size: 15px;
+      font-weight: normal;
+    }
+    .semi-form-field-main {
+      textarea::placeholder  {
+        color: var(--semi-color-text-2);
+        font-size: 14px;
+        font-weight: normal;
+      }
+    }
+    .semi-checkbox {
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--semi-color-border);
+      padding-top: 3px;
+    }
+  }
+  .checkbox-group {
+    height: calc(100vh - 48px - 132px - 160px); 
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .checkbox-all {
+    margin-top: 6px;
+    // border-bottom: 1px solid var(--semi-color-border);
+    &.checkbox-all-pc {
+      padding-bottom: 8px;
+    }
+    &.checkbox-all-mobile {
+      .semi-checkbox-inner-display {
+        opacity: 0;
+      }
+      .semi-checkbox {
+        padding: 5px 10px;
+        &.semi-checkbox-checked {
+          .semi-checkbox-addon {
+            color: var(--semi-color-primary);
+          }
+        }
+      }
+      .semi-checkbox-content {
+        position: absolute;
+        width: 100%;
+      }
+    }
+  }
+  .semi-checkboxGroup.checkbox-group-mobile {
+    .semi-checkbox-inner {
+      opacity: 0;
+    }
+    &.semi-checkboxGroup-vertical {
+      row-gap: 6px;
+    }
+    .semi-checkbox {
+      padding: 8px 10px;
+    }
+    .semi-checkbox-checked {
+      background-color: var(--semi-color-primary-light-default);
+      border-radius: var(--semi-border-radius-medium);
+      .semi-checkbox-addon {
+        color: var(--semi-color-primary);
+      }
+    }
+    .semi-checkbox-content {
+      position: absolute;
+      width: 100%;
+    }
+  }
+  .bottom-btn-pc {
+    // position: absolute; 
+    // bottom: 0;
+    // right: 0;
+    &.cancel {
+      // right: 60px;
+      margin-right: 10px;
+    }
+  }
+  .bottom-btn-mobile {
+    button {
+      height: 50px;
+      border-radius: var(--semi-border-radius-medium);
+      .semi-button-content {
+        font-size: 17px;
+      }
+    }
+  }
+  .bottom-btn-wrap {
+    position: fixed;
+    bottom: 0;
+    height: 32px;
+    width: 100%;
+    background-color: var(--semi-color-bg-2);
+
+  }
+  .bottom-btn-warp {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .semi-checkbox-extra {
+    color: red;
+    font-size: 12px;
+  }
+}
+
+
+
