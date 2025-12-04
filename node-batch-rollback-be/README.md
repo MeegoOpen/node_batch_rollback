@@ -1,4 +1,4 @@
-# Node Operator Standalone
+#Feishu Project  Node Batch Rollback Server
 
 一个基于 Gin 的服务，提供节点操作配置的保存/查询能力，以及到飞书项目平台的反向代理。已将所有接口的响应结构统一为 `code/data/msg`。
 
@@ -136,4 +136,4 @@ curl -i "http://localhost:8080/proxy/open_api/your_path"
 - Token 获取失败：检查 `FEISHU_PLUGIN_ID/SECRET` 是否正确，网络是否可达。
 - 数据库错误：确认 `configs/config.yaml` 的数据库配置，sqlite 文件是否有权限。
 - 代理 4xx/5xx：通常是下游服务返回，查看被代理服务的响应详情。
-
+- 注意当前飞书项目api请求的是虚拟token
