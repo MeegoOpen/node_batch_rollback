@@ -45,7 +45,7 @@ func (a *FeishuAuth) refreshToken() error {
 	payload := map[string]interface{}{
 		"plugin_id":     a.pluginID,
 		"plugin_secret": a.pluginSecret,
-		"type":          1,
+		"type":          0,
 	}
 
 	jsonPayload, err := json.Marshal(payload)
