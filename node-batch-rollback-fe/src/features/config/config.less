@@ -3,12 +3,18 @@
     margin: 0 auto;
   }
 }
+
 .semi-card-header-wrapper {
   align-items: center;
 }
+
 .config-form {
   .semi-card-header {
     padding: 0 24px;
+  }
+
+  .semi-select {
+    width: 100%;
   }
 }
 
@@ -16,9 +22,11 @@
   .semi-form-field-label-text {
     margin-left: 15px;
   }
+
   .feature-wrap-children {
     .semi-form-field {
       position: relative;
+
       &::before {
         content: '';
         position: absolute;
@@ -29,18 +37,21 @@
         background-color: var(--semi-color-border);
         z-index: 1;
       }
+
       .semi-form-field-label-text {
         margin-left: 40px;
       }
     }
   }
- 
+
   .feature-wrap-header+.semi-form-field {
     display: inline-flex;
     width: calc(100% - 200px);
   }
+
   .feature-wrap-header {
     position: relative;
+
     &-left {
       display: flex;
       align-items: center;
@@ -49,6 +60,7 @@
       color: var(--semi-color-text-0);
       font-size: 14px;
     }
+
     &::before {
       content: '';
       position: absolute;
@@ -59,6 +71,7 @@
       background-color: var(--semi-color-border);
       z-index: 1;
     }
+
     &::after {
       content: '';
       position: absolute;
@@ -72,3 +85,49 @@
   }
 }
 
+.mapping-setting {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--semi-color-border);
+}
+
+.mapping-setting-add {
+  margin-bottom: 12px;
+}
+
+.mapping-setting-row+.mapping-setting-row {
+  margin-top: 12px;
+}
+
+.mapping-setting-row-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mapping-setting-row-source,
+.mapping-setting-row-target {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.mapping-setting-row-arrow,
+.mapping-setting-row-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapping-setting-row-arrow {
+  flex: 0 0 32px;
+  line-height: 1;
+}
+
+.mapping-setting-row-action {
+  flex: 0 0 auto;
+}
+
+.flow-node-state-tree,
+.mapping-setting-row .semi-form-field {
+  width: 100%;
+}
