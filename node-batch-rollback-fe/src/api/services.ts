@@ -32,19 +32,35 @@ export interface FlowNode2 {
 // 没有 QPS 限制的接口
 export const fetchFlowNodes2 = (
   projectKey: string,
-  workItemType: string,
+  _workItemType: string,
   templateId: number,
   flowType: "workflow" | "stateflow"
-) =>
-  limitPost<unknown, ResponseWrap<FlowNode2[]>>(
-    "/m-api/v1/builtin_app/common_api/query_templates_r?app_type=node_operator",
-    {
-      project_key: projectKey,
-      work_item_type_key: workItemType,
-      template_id: templateId,
-      flow_type: flowType,
+) => {
+  void _workItemType;
+  return limitGet<
+    unknown,
+    Omit<ResponseWrap<FlowNode>, "data"> & {
+      data: FlowNode;
+      err_code: number;
     }
-  ).then((res) => (res.code === 0 ? res.data ?? [] : []));
+  >(`/proxy/open_api/${projectKey}/template_detail/${templateId}`).then((res) => {
+    if (res.err_code !== 0 || typeof res.data !== "object") {
+      return [];
+    }
+    if (flowType === "workflow") {
+      return (res.data.workflow_confs ?? []).map((node) => ({
+        key: node.state_key,
+        name: node.name,
+        type: node.pass_mode,
+      }));
+    }
+    return (res.data.state_flow_confs ?? []).map((node) => ({
+      key: node.state_key,
+      name: node.name,
+      type: node.state_type,
+    }));
+  });
+};
 /**
  * 节点状态，1：未开始，2：进行中，3：已完成
  */
@@ -266,6 +282,7 @@ export interface IConfigItem {
   operate_time: string; //操作时间fieldKey
   operate_node: string; //操作节点fieldKey
   start_time: string; //节点开始时间fieldKey
+  condition?: string; // 审批节点条件配置
 }
 
 // 获取配置
@@ -321,6 +338,66 @@ export const updateChangeField = ({
     {
       update_fields: updateFields,
     }
+  );
+
+export interface SuggestionConclusionResult {
+  key: string;
+  label: string;
+  origin_label: string;
+}
+
+export interface SuggestionInfo {
+  node_id: string;
+  summary_mode: string;
+  opinion: {
+    finished_opinion_result: string;
+    owners_finished_opinion_result: Array<{
+      owner: string;
+      finished_opinion_result: string;
+    }>;
+  };
+  conclusion: {
+    finished_conclusion_result: SuggestionConclusionResult;
+    owners_finished_conclusion_result: Array<{
+      owner: string;
+      finished_conclusion_result: SuggestionConclusionResult;
+    }>;
+  };
+}
+
+export interface SuggestionResponseData {
+  project_key: string;
+  work_item_id: string | number;
+  finished_infos: SuggestionInfo[];
+}
+
+export const getSuggestion = (
+  projectKey: string,
+  workItemId: number,
+  nodeId: string
+) =>
+  limitPost<unknown, ResponseWrap<SuggestionResponseData>>(
+    "/proxy/open_api/work_item/finished/batch_query",
+    {
+      project_key: projectKey,
+      work_item_id: workItemId,
+      node_ids: [nodeId],
+    }
+  );
+
+export interface UpdateSuggestionParams {
+  project_key: string;
+  work_item_id: number;
+  node_id: string;
+  opinion: string;
+  finished_conclusion_option_key: string;
+  operation_type: "owner" | "node";
+}
+
+export const updateSuggestion = (params: UpdateSuggestionParams) =>
+  limitPost<unknown, ResponseWrap<Record<string, never>>>(
+    "/proxy/open_api/work_item/finished/update",
+    params
   );
 
 interface WorkItemDetailReq {

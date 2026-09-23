@@ -1,4 +1,11 @@
-import { Typography, Form, Card, Button, Tooltip, ArrayField } from "@douyinfe/semi-ui";
+import {
+  Typography,
+  Form,
+  Card,
+  Button,
+  Tooltip,
+  ArrayField,
+} from "@douyinfe/semi-ui";
 import type { FormApi } from "@douyinfe/semi-ui/lib/es/form";
 import type { SelectProps } from "@douyinfe/semi-ui/lib/es/select";
 import { IconDelete, IconPlusCircle, IconInfoCircle } from "@douyinfe/semi-icons";
@@ -6,6 +13,7 @@ import { IconDelete, IconPlusCircle, IconInfoCircle } from "@douyinfe/semi-icons
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { getFieldsList } from "../../api/services";
 import sdk from "../../sdk";
+import MappingSetting from "./MappingSetting";
 import "./config.less";
 
 const defaultMap = [
@@ -58,8 +66,9 @@ const WorkItemTask = (props: {
   spaceId: string;
   formApi: FormApi;
   refresh: () => void;
+  values?: any;
 }) => {
-  const { spaceId, formApi, refresh } = props;
+  const { spaceId, formApi, refresh, values } = props;
   const [woList, setWoList] = useState<SelectProps["optionList"]>([]);
   const [fieldsMap, setFieldsMap] = useState(new Map());
   const firstLoadFlag = useRef(true);
@@ -104,15 +113,20 @@ const WorkItemTask = (props: {
               setTimeout(async () => {
                 const result = await Promise.all(
                   batchItems.map(async ({ id }) => {
-                    const wo = await sdk.WorkObject.load({
-                      ...param,
-                      workObjectId: id,
-                    });
-                    return {
-                      label: wo.name,
-                      value: wo.id,
-                      flowMode: wo.flowMode,
-                    };
+                    try {
+                      const wo = await sdk.WorkObject.load({
+                        workObjectId: id,
+                        spaceId: param.spaceId,
+                      });
+                      return {
+                        label: wo.name,
+                        value: wo.id,
+                        flowMode: wo.flowMode,
+                      };
+                    } catch (err) {
+                      console.log("load work object failed", err);
+                      return undefined;
+                    }
                   })
                 );
                 resolve(result);
@@ -123,7 +137,7 @@ const WorkItemTask = (props: {
             spaceId: spaceId,
           }
         );
-        setWoList(_originDatas.filter((i) => i.flowMode === "workflow"));
+        setWoList(_originDatas.filter((i) => i).filter((i) => i.flowMode === "workflow"));
       })
       .catch((e) => {
         console.log("load space failed", e);
@@ -138,6 +152,7 @@ const WorkItemTask = (props: {
       formApi.setValue(`${field}.operate_time`, undefined);
       formApi.setValue(`${field}.operate_node`, undefined);
       formApi.setValue(`${field}.start_time`, undefined);
+      formApi.setValue(`${field}.condition`, []);
       if (value) {
         const fieldsList = await getWorkItemFields(spaceId, value);
         setFieldsMap((prev) => {
@@ -211,6 +226,18 @@ const WorkItemTask = (props: {
               }}
             >
               <Card style={{ flex: 1 }} headerExtraContent={null}>
+                <Form.Input
+                  field={`${field}.button_label`}
+                  label={{
+                    text: "驳回功能使用条件",
+                    extra: (
+                      <Tooltip content="当审批结论文案包含右侧关键字时，允许使用批量驳回能力">
+                        <IconInfoCircle style={{ color: "var(--semi-color-text-2)" }} />
+                      </Tooltip>
+                    ),
+                  }}
+                  placeholder="选填，输入审批结论文案关键字"
+                />
                 <Form.Select
                   label="适用工作项"
                   placeholder="待填"
@@ -245,6 +272,7 @@ const WorkItemTask = (props: {
                   <div className="feature-wrap-children">
                     {defaultMap.map((item) => (
                       <Form.Select
+                        key={`${field}_${item.value}`}
                         showClear
                         label={item.label}
                         field={`${field}.${item.value}`}
@@ -258,6 +286,13 @@ const WorkItemTask = (props: {
                     ))}
                   </div>
                 </div>
+                <MappingSetting
+                  key={field}
+                  spaceId={spaceId}
+                  values={values}
+                  formApi={formApi}
+                  field={field}
+                />
               </Card>
               <Button
                 style={{ marginLeft: 12 }}
